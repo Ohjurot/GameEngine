@@ -1,8 +1,15 @@
-#include <EngineCore/Engine.h>
-
-#include <iostream>
+#include <EngineCore/EngineContext.h>
 
 int main()
 {
-    std::cout << GetMsg();
+    Engine::Init();
+
+    auto& wnd = *Engine::Get().Window;
+
+    while (!wnd.CloseRequested())
+    {
+        wnd.Update();
+    }
+
+    Engine::Shutdown();
 }
