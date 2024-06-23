@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineContext.h" />
+    <ClInclude Include="IGraphics.h" />
     <ClInclude Include="IWindow.h" />
   </ItemGroup>
   <ItemGroup>

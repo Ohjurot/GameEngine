@@ -7,3 +7,10 @@
 
 #include <d3d12.h>
 #include <dxgi1_6.h>
+
+#ifdef CONF_Debug
+#include <d3d12sdklayers.h>
+#include <dxgidebug.h>
+#endif
+
+#include <EngineWindows/ComPointer.h>

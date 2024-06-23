@@ -11,6 +11,12 @@ namespace Engine
             WindowsWindow();
             ~WindowsWindow();
 
+            /*!
+             * @brief Exposes the window handle
+             * @return Native win32 handle
+            */
+            inline HWND GetWindowHandle() { return m_wnd; }
+
         public:
             void Update() override;
             bool CloseRequested() override;

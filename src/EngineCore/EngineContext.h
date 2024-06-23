@@ -1,6 +1,7 @@
 #pragma once
 
 #include <EngineCore/IWindow.h>
+#include <EngineCore/IGraphics.h>
 
 #include <memory>
 
@@ -12,6 +13,7 @@ namespace Engine
     struct EngineContext
     {
         std::unique_ptr<IWindow> Window;
+        std::unique_ptr<IGraphics> Graphics;
     };
 
     /*!

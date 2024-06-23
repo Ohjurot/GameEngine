@@ -15,11 +15,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ComPointer.h" />
+    <ClInclude Include="D3D12\D3D12Debug.h" />
+    <ClInclude Include="D3D12\D3D12Graphics.h" />
     <ClInclude Include="WindowsEngine.h" />
     <ClInclude Include="WindowsWindow.h" />
     <ClInclude Include="WinInclude.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="D3D12\D3D12Debug.cpp" />
+    <ClCompile Include="D3D12\D3D12Graphics.cpp" />
     <ClCompile Include="WindowsEngine.cpp" />
     <ClCompile Include="WindowsWindow.cpp" />
   </ItemGroup>
