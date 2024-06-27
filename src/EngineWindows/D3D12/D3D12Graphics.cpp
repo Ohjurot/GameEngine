@@ -22,7 +22,7 @@ Engine::D3D12Graphics::D3D12Graphics(WindowsWindow& wnd) :
     DXGI_ADAPTER_DESC gpuDescription;
     gpuAdapter->GetDesc(&gpuDescription);
     m_gpuName.reserve(128);
-    WideCharToMultiByte(CP_UTF8, 0, gpuDescription.Description, -1, m_gpuName.data(), 128, nullptr, nullptr);
+    WideCharToMultiByte(CP_UTF8, 0, gpuDescription.Description, -1, (LPSTR)m_gpuName.data(), 128, nullptr, nullptr);
 
     // === Create the device & queue ===
 
