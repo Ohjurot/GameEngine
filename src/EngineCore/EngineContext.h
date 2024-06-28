@@ -2,6 +2,7 @@
 
 #include <EngineCore/IWindow.h>
 #include <EngineCore/IGraphics.h>
+#include <EngineCore/LayerStackManager.h>
 
 #include <memory>
 
@@ -12,8 +13,10 @@ namespace Engine
     */
     struct EngineContext
     {
-        std::unique_ptr<IWindow> Window;
-        std::unique_ptr<IGraphics> Graphics;
+        std::shared_ptr<IWindow> Window;
+        std::shared_ptr<IGraphics> Graphics;
+        std::shared_ptr<BasicLayer> Imgui;
+        LayerStackManager LayerStack;
     };
 
     /*!

@@ -10,12 +10,15 @@ void Engine::Init()
 {
     OSInit();
 
-    // TODO: OS Independent init
+    auto& ctx = Get();
+
+    ctx.Imgui->SetLayerIndex(90);
+    ctx.LayerStack.AttacheLayer(ctx.Imgui);
 }
 
 void Engine::Shutdown()
 {
-    // TODO: OS Independent shutdown
+    Get().LayerStack.ClearLayers();
 
     OSShutdown();
 }

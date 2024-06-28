@@ -1,18 +1,17 @@
 #include "D3D12Graphics.h"
 
-Engine::D3D12Graphics::D3D12Graphics(WindowsWindow& wnd) :
-    m_window(wnd),
-    m_bufferWidth(m_window.GetWidth()),
-    m_bufferHeight(m_window.GetHeight())
+Engine::D3D12Graphics::D3D12Graphics() :
+    m_bufferWidth(Get().Window->GetWidth()),
+    m_bufferHeight(Get().Window->GetHeight())
 {
     m_debug.EnableDebug();
 
     // === Init DXGI Factory ===
-    
+
     UINT dxgiFactoryFlag = 0;
-    #ifdef CONF_Debug
+#ifdef CONF_Debug
     dxgiFactoryFlag = DXGI_CREATE_FACTORY_DEBUG;
-    #endif
+#endif
     CreateDXGIFactory2(dxgiFactoryFlag, IID_PPV_ARGS(&m_dxgiFactory));
 
     // === Find GPU ===
@@ -67,7 +66,7 @@ Engine::D3D12Graphics::D3D12Graphics(WindowsWindow& wnd) :
     fullscreenDesc.Windowed = TRUE;
 
     ComPointer<IDXGISwapChain1> swapChain;
-    m_dxgiFactory->CreateSwapChainForHwnd(m_directQueue, m_window.GetWindowHandle(), &swapChainDesc, &fullscreenDesc, nullptr, &swapChain);
+    m_dxgiFactory->CreateSwapChainForHwnd(m_directQueue, dynamic_cast<WindowsWindow*>(Get().Window.get())->GetWindowHandle(), &swapChainDesc, &fullscreenDesc, nullptr, &swapChain);
     swapChain.QueryInterface(m_swapChain);
 
     // === Retrive RTV & Buffers ===
@@ -101,6 +100,10 @@ Engine::D3D12Graphics::D3D12Graphics(WindowsWindow& wnd) :
 Engine::D3D12Graphics::~D3D12Graphics()
 {
     FlushQueue(BufferCount);
+
+    m_cmdList.Release();
+    m_cmdAllocator.Release();
+    m_rtvHeap.Release();
 
     ReleaseBuffers();
 
@@ -144,6 +147,19 @@ void Engine::D3D12Graphics::WaitForFence(UINT64 fenceValue /*= -1*/)
     }
 }
 
+void Engine::D3D12Graphics::DrawCommandList()
+{
+    m_cmdList->Close();
+
+    ID3D12CommandList* lists[] = { m_cmdList };
+    m_directQueue->ExecuteCommandLists(1, lists);
+
+    FlushQueue();
+
+    m_cmdAllocator->Reset();
+    m_cmdList->Reset(m_cmdAllocator, nullptr);
+}
+
 const char* Engine::D3D12Graphics::GetAPIName()
 {
     return "D3D12";
@@ -158,8 +174,8 @@ void Engine::D3D12Graphics::BeginFrame()
 {
     // === SwapChain resizing ===
 
-    size_t newWidth = m_window.GetWidth();
-    size_t newHeight = m_window.GetHeight();
+    size_t newWidth = Get().Window->GetWidth();
+    size_t newHeight = Get().Window->GetHeight();
     if (newWidth != m_bufferWidth || newHeight != m_bufferHeight)
     {
         FlushQueue(BufferCount);
@@ -195,10 +211,6 @@ void Engine::D3D12Graphics::BeginFrame()
 
     float clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
     m_cmdList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-
-    m_cmdList->RSSetViewports(1, &m_viewport);
-    m_cmdList->RSSetScissorRects(1, &m_fullRect);
-    m_cmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 }
 
 void Engine::D3D12Graphics::EndFrame()
@@ -218,18 +230,11 @@ void Engine::D3D12Graphics::EndFrame()
     m_cmdList->ResourceBarrier(1, &rtSetupBarrier);
 
     // === Execute commands ===
-    m_cmdList->Close();
-    ID3D12CommandList* lists[] = { m_cmdList };
-    m_directQueue->ExecuteCommandLists(1, lists);
+    DrawCommandList();
 
     // === Wait and present ===
-    FlushQueue();
     m_swapChain->Present(1, 0);
 
-    // === Reset cmd allocator and list ===
-
-    m_cmdAllocator->Reset();
-    m_cmdList->Reset(m_cmdAllocator, nullptr);
 }
 
 size_t Engine::D3D12Graphics::GetCanvasWidth()
@@ -240,6 +245,16 @@ size_t Engine::D3D12Graphics::GetCanvasWidth()
 size_t Engine::D3D12Graphics::GetCanvasHight()
 {
     return m_bufferHeight;
+}
+
+void Engine::D3D12Graphics::PrepareCommandList()
+{
+    m_currentBufferIndex = m_swapChain->GetCurrentBackBufferIndex();
+    auto rtvHandle = m_rtvHandles[m_currentBufferIndex];
+
+    m_cmdList->RSSetViewports(1, &m_viewport);
+    m_cmdList->RSSetScissorRects(1, &m_fullRect);
+    m_cmdList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 }
 
 void Engine::D3D12Graphics::GetBuffers()

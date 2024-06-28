@@ -1,12 +1,14 @@
 #pragma once
 
 #include <EngineCore/IGraphics.h>
+#include <EngineCore/EngineContext.h>
 
 #include <EngineWindows/WinInclude.h>
 #include <EngineWindows/WindowsWindow.h>
 #include <EngineWindows/D3D12/D3D12Debug.h>
 
 #include <string>
+
 
 namespace Engine
 {
@@ -19,7 +21,7 @@ namespace Engine
             static const size_t BufferCount = 2;
 
         public:
-            D3D12Graphics(WindowsWindow& wnd);
+            D3D12Graphics();
             ~D3D12Graphics();
 
             /*!
@@ -34,6 +36,30 @@ namespace Engine
             */
             void WaitForFence(UINT64 fenceValue = -1);
 
+            /*!
+             * @brief Draws and waits
+            */
+            void DrawCommandList();
+
+            /*!
+             * @brief Retrieves the gpu device pointer
+             * @return D3D12 Device pointer
+            */
+            auto GetDevice()
+            {
+                return m_gpuDevice;
+            }
+
+            /*!
+             * @brief Retrieves the active command list
+             * @return D3D12 Command list point (GFX)
+            */
+            auto SetupAndGetCommandList()
+            {
+                PrepareCommandList();
+                return m_cmdList;
+            }
+
         public:
             const char* GetAPIName() override;
             const char* GetGPUName() override;
@@ -43,6 +69,7 @@ namespace Engine
             size_t GetCanvasHight() override;
 
         private:
+            void PrepareCommandList();
             void GetBuffers();
             void ReleaseBuffers();
             void SetupViewportAndRect();
@@ -50,7 +77,6 @@ namespace Engine
         private:
             D3D12Debug m_debug;
 
-            WindowsWindow& m_window;
             D3D12_VIEWPORT m_viewport;
             D3D12_RECT m_fullRect;
 

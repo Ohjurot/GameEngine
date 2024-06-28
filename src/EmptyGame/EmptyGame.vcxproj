@@ -60,17 +60,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)build\bin\$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)vendor\imgui\;$(SolutionDir)vendor\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">
     <OutDir>$(SolutionDir)build\bin\$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)vendor\imgui\;$(SolutionDir)vendor\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)build\bin\$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)build\obj\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
-    <IncludePath>$(SolutionDir)src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)vendor\imgui\;$(SolutionDir)vendor\;$(SolutionDir)src\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -123,15 +123,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EmptyGame.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\vendor\imgui\imgui.vcxproj">
+      <Project>{a28b88f1-896c-4566-90f0-aeca320b6f86}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\EngineCore\EngineCore.vcxproj">
       <Project>{095b7cb0-f70a-4354-81a6-70c5c9b7de5b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\EngineWindows\EngineWindows.vcxproj">
       <Project>{afbd0ab4-ec26-44b5-b02b-570d9e79e4a3}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EmptyGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

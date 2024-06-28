@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EngineWindows", "src\Engine
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EmptyGame", "src\EmptyGame\EmptyGame.vcxproj", "{0F234945-272B-4A16-A126-A2EADAF9021F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "vendor\imgui\imgui.vcxproj", "{A28B88F1-896C-4566-90F0-AECA320B6F86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -38,6 +40,12 @@ Global
 		{0F234945-272B-4A16-A126-A2EADAF9021F}.Develop|x64.Build.0 = Develop|x64
 		{0F234945-272B-4A16-A126-A2EADAF9021F}.Release|x64.ActiveCfg = Release|x64
 		{0F234945-272B-4A16-A126-A2EADAF9021F}.Release|x64.Build.0 = Release|x64
+		{A28B88F1-896C-4566-90F0-AECA320B6F86}.Debug|x64.ActiveCfg = Debug|x64
+		{A28B88F1-896C-4566-90F0-AECA320B6F86}.Debug|x64.Build.0 = Debug|x64
+		{A28B88F1-896C-4566-90F0-AECA320B6F86}.Develop|x64.ActiveCfg = Develop|x64
+		{A28B88F1-896C-4566-90F0-AECA320B6F86}.Develop|x64.Build.0 = Develop|x64
+		{A28B88F1-896C-4566-90F0-AECA320B6F86}.Release|x64.ActiveCfg = Release|x64
+		{A28B88F1-896C-4566-90F0-AECA320B6F86}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +53,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{095B7CB0-F70A-4354-81A6-70C5C9B7DE5B} = {D82FD811-D9D3-4F1F-B8B1-82692150F724}
 		{AFBD0AB4-EC26-44B5-B02B-570D9E79E4A3} = {D82FD811-D9D3-4F1F-B8B1-82692150F724}
+		{A28B88F1-896C-4566-90F0-AECA320B6F86} = {A9403B76-453C-48B5-BBB0-8F8D0F0EBE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4EECD6B0-3297-4BE3-97C7-70103AED65D7}

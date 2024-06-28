@@ -50,6 +50,7 @@ Engine::WindowsWindow::~WindowsWindow()
 
 void Engine::WindowsWindow::Update()
 {
+    // === Feed messages ===
     MSG msg{};
     while (PeekMessageW(&msg, m_wnd, 0, 0, PM_REMOVE))
     {
@@ -95,6 +96,13 @@ LRESULT Engine::WindowsWindow::WindowProc_Redirect(HWND wnd, UINT msg, WPARAM wp
 
 LRESULT Engine::WindowsWindow::WindowProc(HWND wnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+    // === Feed imgui ===
+    if (ImGui_ImplWin32_WndProcHandler(wnd, msg, wparam, lparam) == TRUE)
+    {
+        return TRUE;
+    }
+
+    // === Our events ===
     switch (msg)
     {
         case WM_CLOSE:
@@ -108,5 +116,7 @@ LRESULT Engine::WindowsWindow::WindowProc(HWND wnd, UINT msg, WPARAM wparam, LPA
             }
             break;
     }
+
+    // === Fallback default handler ===
     return DefWindowProcW(wnd, msg, wparam, lparam);
 }
